@@ -11,6 +11,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProjectDLL", "ProjectDLL\ProjectDLL.vcxproj", "{8B0C3BDE-C8B9-40A8-819B-0129E121B124}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DLLCPlusPlus", "DLLCPlusPlus\DLLCPlusPlus.vcxproj", "{1B677B76-808C-4D2C-B94B-822A6A5A1C0E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D0B2A7AA-3BB9-4D81-94B9-F5F9B4FB931E} = {D0B2A7AA-3BB9-4D81-94B9-F5F9B4FB931E}
+		{8B0C3BDE-C8B9-40A8-819B-0129E121B124} = {8B0C3BDE-C8B9-40A8-819B-0129E121B124}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,5 +1,5 @@
 #pragma once
 extern "C"
 {
-	__declspec(dllexport) void Negative(unsigned char* bmp, int begin, int end, int width);
+	__declspec(dllexport) void Negative(char** bmp, int widht, int height);
 }

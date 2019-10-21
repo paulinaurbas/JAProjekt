@@ -92,9 +92,10 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\User\Documents\GitHub\JAProjekt\JA_project\JaProjectWindowsApp\CPlusPlusDll;C:\Users\User\Documents\GitHub\JAProjekt\JA_project\JaProjectWindowsApp\AsemblerDll;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>C:\Users\User\Documents\GitHub\JAProjekt\JA_project\JaProjectWindowsApp\Debug\AsemblerDll.lib</AdditionalDependencies>
+      <AdditionalDependencies>C:\Users\User\Documents\GitHub\JAProjekt\JA_project\JaProjectWindowsApp\Debug\AsemblerDll.lib;C:\Users\User\Documents\GitHub\JAProjekt\JA_project\JaProjectWindowsApp\Debug\CPlusPlusDll.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
@@ -106,9 +107,10 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\User\Documents\GitHub\JAProjekt\JA_project\JaProjectWindowsApp\CPlusPlusDll;C:\Users\User\Documents\GitHub\JAProjekt\JA_project\JaProjectWindowsApp\AsemblerDll;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>C:\Users\User\Documents\GitHub\JAProjekt\JA_project\JaProjectWindowsApp\Debug\AsemblerDll.lib</AdditionalDependencies>
+      <AdditionalDependencies>C:\Users\User\Documents\GitHub\JAProjekt\JA_project\JaProjectWindowsApp\Debug\AsemblerDll.lib;C:\Users\User\Documents\GitHub\JAProjekt\JA_project\JaProjectWindowsApp\Debug\CPlusPlusDll.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
     </Link>

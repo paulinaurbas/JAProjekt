@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "CPlusPlusDll.h"
 namespace JaProjectWindowsApp {
 
 	using namespace System;
@@ -229,8 +230,11 @@ namespace JaProjectWindowsApp {
 		OpenFileDialog^ openFileDialog1 = gcnew OpenFileDialog;
 		openFileDialog1->Title = "Upload image";
 		openFileDialog1->Filter = "Bitmap (*.bmp)|*.bmp";
-			pictureBox1->SizeMode = PictureBoxSizeMode::StretchImage;
-			pictureBox2->Image = nullptr;
+		pictureBox1->SizeMode = PictureBoxSizeMode::StretchImage;
+		pictureBox2->Image = nullptr;
+		MessageBox(Negative());
+		
+			
 	}
 private: System::Void pictureBox2_Click(System::Object^  sender, System::EventArgs^  e) {
 }

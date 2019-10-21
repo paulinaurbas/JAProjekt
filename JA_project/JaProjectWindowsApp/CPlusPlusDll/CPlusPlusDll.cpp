@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-
+#include <iostream>
 
 #include "stdafx.h"
 
@@ -10,9 +10,8 @@
 
 extern "C"
 {
-
-	__declspec(dllexport)  void Negative(char** bmp, int widht, int height)
+	__declspec(dllexport)  void Negative()
 	{
-
+		std::cout << "Hello" << std::endl;
 	}
 }

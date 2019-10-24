@@ -8,7 +8,7 @@
 extern "C"
 {
 	
-	__declspec(dllexport)  void Negative(char** bmp, int widht, int height)
+	__declspec(dllexport)  void Negative(char** bmp, int begin, int end)
 	{
 		
 	}

@@ -1,6 +1,10 @@
 #pragma once
 #include <string>
+#include <windows.h>
+#include "tchar.h"
 #include "CPlusPlusDll.h"
+#include "ReadFromFileBMP.h"
+#include <thread>
 namespace JaProjectWindowsApp {
 
 	using namespace System;
@@ -9,12 +13,13 @@ namespace JaProjectWindowsApp {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-
+	extern "C" int _stdcall MyProc1(DWORD x, DWORD y);
 	/// <summary>
 	/// Summary for MainWidnow
 	/// </summary>
 	public ref class MainWidnow : public System::Windows::Forms::Form
 	{
+		
 	public:
 		MainWidnow(void)
 		{
@@ -49,6 +54,10 @@ namespace JaProjectWindowsApp {
 
 
 	private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::Label^  label4;
+	private: System::Windows::Forms::TrackBar^  trackBar1;
+	private: System::Windows::Forms::BindingSource^  bindingSource1;
+	private: System::ComponentModel::IContainer^  components;
 
 
 
@@ -56,7 +65,7 @@ namespace JaProjectWindowsApp {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -65,6 +74,7 @@ namespace JaProjectWindowsApp {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = (gcnew System::ComponentModel::Container());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
 			this->NegativeLabelInfo = (gcnew System::Windows::Forms::Label());
@@ -76,24 +86,31 @@ namespace JaProjectWindowsApp {
 			this->checkBoxAsm = (gcnew System::Windows::Forms::CheckBox());
 			this->CPlusPlusBox = (gcnew System::Windows::Forms::CheckBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->trackBar1 = (gcnew System::Windows::Forms::TrackBar());
+			this->bindingSource1 = (gcnew System::Windows::Forms::BindingSource(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// pictureBox1
 			// 
-			this->pictureBox1->Location = System::Drawing::Point(41, 131);
+			this->pictureBox1->Location = System::Drawing::Point(55, 161);
+			this->pictureBox1->Margin = System::Windows::Forms::Padding(4);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(291, 240);
+			this->pictureBox1->Size = System::Drawing::Size(388, 295);
 			this->pictureBox1->TabIndex = 0;
 			this->pictureBox1->TabStop = false;
 			this->pictureBox1->Click += gcnew System::EventHandler(this, &MainWidnow::pictureBox1_Click);
 			// 
 			// pictureBox2
 			// 
-			this->pictureBox2->Location = System::Drawing::Point(372, 131);
+			this->pictureBox2->Location = System::Drawing::Point(496, 161);
+			this->pictureBox2->Margin = System::Windows::Forms::Padding(4);
 			this->pictureBox2->Name = L"pictureBox2";
-			this->pictureBox2->Size = System::Drawing::Size(291, 240);
+			this->pictureBox2->Size = System::Drawing::Size(388, 295);
 			this->pictureBox2->TabIndex = 1;
 			this->pictureBox2->TabStop = false;
 			this->pictureBox2->Click += gcnew System::EventHandler(this, &MainWidnow::pictureBox2_Click);
@@ -103,18 +120,20 @@ namespace JaProjectWindowsApp {
 			this->NegativeLabelInfo->AutoSize = true;
 			this->NegativeLabelInfo->Font = (gcnew System::Drawing::Font(L"Goudy Old Style", 20.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->NegativeLabelInfo->Location = System::Drawing::Point(46, 50);
+			this->NegativeLabelInfo->Location = System::Drawing::Point(61, 62);
+			this->NegativeLabelInfo->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->NegativeLabelInfo->Name = L"NegativeLabelInfo";
-			this->NegativeLabelInfo->Size = System::Drawing::Size(359, 31);
+			this->NegativeLabelInfo->Size = System::Drawing::Size(454, 39);
 			this->NegativeLabelInfo->TabIndex = 2;
 			this->NegativeLabelInfo->Text = L"Make negative from your picture";
 			this->NegativeLabelInfo->Click += gcnew System::EventHandler(this, &MainWidnow::label1_Click);
 			// 
 			// buttonLoad
 			// 
-			this->buttonLoad->Location = System::Drawing::Point(699, 208);
+			this->buttonLoad->Location = System::Drawing::Point(932, 256);
+			this->buttonLoad->Margin = System::Windows::Forms::Padding(4);
 			this->buttonLoad->Name = L"buttonLoad";
-			this->buttonLoad->Size = System::Drawing::Size(83, 89);
+			this->buttonLoad->Size = System::Drawing::Size(111, 110);
 			this->buttonLoad->TabIndex = 3;
 			this->buttonLoad->Text = L"Load your picture!";
 			this->buttonLoad->UseVisualStyleBackColor = true;
@@ -125,9 +144,10 @@ namespace JaProjectWindowsApp {
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Goudy Old Style", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(37, 107);
+			this->label1->Location = System::Drawing::Point(49, 132);
+			this->label1->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(53, 21);
+			this->label1->Size = System::Drawing::Size(61, 23);
 			this->label1->TabIndex = 4;
 			this->label1->Text = L"Before";
 			this->label1->Click += gcnew System::EventHandler(this, &MainWidnow::label1_Click_1);
@@ -137,9 +157,10 @@ namespace JaProjectWindowsApp {
 			this->AfterLabel->AutoSize = true;
 			this->AfterLabel->Font = (gcnew System::Drawing::Font(L"Goudy Old Style", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->AfterLabel->Location = System::Drawing::Point(368, 107);
+			this->AfterLabel->Location = System::Drawing::Point(491, 132);
+			this->AfterLabel->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->AfterLabel->Name = L"AfterLabel";
-			this->AfterLabel->Size = System::Drawing::Size(44, 21);
+			this->AfterLabel->Size = System::Drawing::Size(50, 23);
 			this->AfterLabel->TabIndex = 5;
 			this->AfterLabel->Text = L"After";
 			this->AfterLabel->Click += gcnew System::EventHandler(this, &MainWidnow::AfterLabel_Click);
@@ -149,26 +170,29 @@ namespace JaProjectWindowsApp {
 			this->label2->AutoSize = true;
 			this->label2->Font = (gcnew System::Drawing::Font(L"Goudy Old Style", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label2->Location = System::Drawing::Point(91, 424);
+			this->label2->Location = System::Drawing::Point(121, 522);
+			this->label2->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(93, 23);
+			this->label2->Size = System::Drawing::Size(115, 27);
 			this->label2->TabIndex = 6;
 			this->label2->Text = L"Speed Test";
 			this->label2->Click += gcnew System::EventHandler(this, &MainWidnow::label2_Click);
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(237, 428);
+			this->textBox1->Location = System::Drawing::Point(316, 527);
+			this->textBox1->Margin = System::Windows::Forms::Padding(4);
 			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(438, 20);
+			this->textBox1->Size = System::Drawing::Size(583, 22);
 			this->textBox1->TabIndex = 7;
 			// 
 			// checkBoxAsm
 			// 
 			this->checkBoxAsm->AutoSize = true;
-			this->checkBoxAsm->Location = System::Drawing::Point(543, 64);
+			this->checkBoxAsm->Location = System::Drawing::Point(606, 78);
+			this->checkBoxAsm->Margin = System::Windows::Forms::Padding(4);
 			this->checkBoxAsm->Name = L"checkBoxAsm";
-			this->checkBoxAsm->Size = System::Drawing::Size(46, 17);
+			this->checkBoxAsm->Size = System::Drawing::Size(57, 21);
 			this->checkBoxAsm->TabIndex = 8;
 			this->checkBoxAsm->Text = L"Asm";
 			this->checkBoxAsm->UseVisualStyleBackColor = true;
@@ -177,9 +201,10 @@ namespace JaProjectWindowsApp {
 			// CPlusPlusBox
 			// 
 			this->CPlusPlusBox->AutoSize = true;
-			this->CPlusPlusBox->Location = System::Drawing::Point(630, 64);
+			this->CPlusPlusBox->Location = System::Drawing::Point(697, 78);
+			this->CPlusPlusBox->Margin = System::Windows::Forms::Padding(4);
 			this->CPlusPlusBox->Name = L"CPlusPlusBox";
-			this->CPlusPlusBox->Size = System::Drawing::Size(45, 17);
+			this->CPlusPlusBox->Size = System::Drawing::Size(55, 21);
 			this->CPlusPlusBox->TabIndex = 9;
 			this->CPlusPlusBox->Text = L"C++";
 			this->CPlusPlusBox->UseVisualStyleBackColor = true;
@@ -190,18 +215,42 @@ namespace JaProjectWindowsApp {
 			this->label3->AutoSize = true;
 			this->label3->Font = (gcnew System::Drawing::Font(L"Goudy Old Style", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label3->Location = System::Drawing::Point(528, 28);
+			this->label3->Location = System::Drawing::Point(581, 30);
+			this->label3->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(162, 23);
+			this->label3->Size = System::Drawing::Size(200, 27);
 			this->label3->TabIndex = 10;
 			this->label3->Text = L"Choose asm or c++\?";
 			this->label3->Click += gcnew System::EventHandler(this, &MainWidnow::label3_Click);
 			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Font = (gcnew System::Drawing::Font(L"Goudy Old Style", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label4->Location = System::Drawing::Point(864, 30);
+			this->label4->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(190, 27);
+			this->label4->TabIndex = 11;
+			this->label4->Text = L"How many threats\?";
+			this->label4->Click += gcnew System::EventHandler(this, &MainWidnow::label4_Click);
+			// 
+			// trackBar1
+			// 
+			this->trackBar1->Location = System::Drawing::Point(869, 62);
+			this->trackBar1->Name = L"trackBar1";
+			this->trackBar1->Size = System::Drawing::Size(185, 56);
+			this->trackBar1->TabIndex = 12;
+			this->trackBar1->Scroll += gcnew System::EventHandler(this, &MainWidnow::trackBar1_Scroll);
+			// 
 			// MainWidnow
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(831, 514);
+			this->ClientSize = System::Drawing::Size(1108, 633);
+			this->Controls->Add(this->trackBar1);
+			this->Controls->Add(this->label4);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->CPlusPlusBox);
 			this->Controls->Add(this->checkBoxAsm);
@@ -213,10 +262,13 @@ namespace JaProjectWindowsApp {
 			this->Controls->Add(this->NegativeLabelInfo);
 			this->Controls->Add(this->pictureBox2);
 			this->Controls->Add(this->pictureBox1);
+			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"MainWidnow";
 			this->Text = L"MainWidnow";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -230,10 +282,15 @@ namespace JaProjectWindowsApp {
 		OpenFileDialog^ openFileDialog1 = gcnew OpenFileDialog;
 		openFileDialog1->Title = "Upload image";
 		openFileDialog1->Filter = "Bitmap (*.bmp)|*.bmp";
+		MyImage * readyImage = (MyImage*)malloc(sizeof(MyImage));
+		BMPtoImage("Holi.bmp", readyImage);
 		pictureBox1->SizeMode = PictureBoxSizeMode::StretchImage;
 		pictureBox2->Image = nullptr;
-		MessageBox(Negative());
-		
+		Negative();
+		int x = 3, y = 4, z = 0;
+		z = MyProc1(x, y);  // wywo³anie procedury asemblerowej z biblioteki
+		DeleteImage(readyImage);
+		free(readyImage);
 			
 	}
 private: System::Void pictureBox2_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -249,6 +306,10 @@ private: System::Void CPlusPlusBox_CheckedChanged(System::Object^  sender, Syste
 private: System::Void checkBoxAsm_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 }
 private: System::Void AfterLabel_Click(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void label4_Click(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void trackBar1_Scroll(System::Object^  sender, System::EventArgs^  e) {
 }
 };
 }

@@ -1,144 +1,108 @@
-#define _CRT_SECURE_NO_DEPRECATE
+
 #include "pch.h"
-#include <stdint.h> 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "ReadBMP.h"
-HEADER * Read_BMP_Header(FILE * inFile, HEADER *pHeader)
+
+
+Image::Image(const char* n) : name(n)
 {
-	fread(&pHeader->Signature, sizeof(pHeader->Signature), 1, inFile);
-	fread(&pHeader->Reserved1, sizeof(pHeader->Reserved1), 1, inFile);
-	fread(&pHeader->Reserved2, sizeof(pHeader->Reserved2), 1, inFile);
-	fread(&pHeader->DataOffSet, sizeof(pHeader->DataOffSet), 1, inFile);
-	// Read in info header structure
-	return pHeader;
+	FileInfo = new BITMAPFILEHEADER;
+	PictureInfo = new BITMAPINFOHEADER;
+	originalBMP = makeBitmap(n);
+	negative = makeBitmap(n);
 }
-INFOHEADER * Read_BMP_Info(FILE * inFile, INFOHEADER * pInfoHeader)
+
+Image::~Image()
 {
-	fread(&pInfoHeader->Size, sizeof(pInfoHeader->Size), 1, inFile);
-	fread(&pInfoHeader->Width, sizeof(pInfoHeader->Width), 1, inFile);
-	fread(&pInfoHeader->Height, sizeof(pInfoHeader->Height), 1, inFile);
-	fread(&pInfoHeader->Planes, sizeof(pInfoHeader->Planes), 1, inFile);
-	fread(&pInfoHeader->BitsPerPixel, sizeof(pInfoHeader->BitsPerPixel), 1, inFile);
-	fread(&pInfoHeader->Compression, sizeof(pInfoHeader->Compression), 1, inFile);
-	fread(&pInfoHeader->SizeImage, sizeof(pInfoHeader->SizeImage), 1, inFile);
-	fread(&pInfoHeader->XPixelsPreMeter, sizeof(pInfoHeader->XPixelsPreMeter), 1, inFile);
-	fread(&pInfoHeader->YPixelsPreMeter, sizeof(pInfoHeader->YPixelsPreMeter), 1, inFile);
-	fread(&pInfoHeader->ColorsUsed, sizeof(pInfoHeader->ColorsUsed), 1, inFile);
-	fread(&pInfoHeader->ColorsImportant, sizeof(pInfoHeader->ColorsImportant), 1, inFile);
-	return pInfoHeader;
 }
-PIXEL** Read_BMP_Pixel(FILE * inFile, HEADER *pHeader, INFOHEADER *pInfoHeader, PIXEL *pPixel, PIXEL **pImage)
+void Image::CalcBytes()
 {
-	for (int i = 0; i < pInfoHeader->Height; i++)
-	{
-		pImage[i] = (PIXEL *)malloc(sizeof(PIXEL) * pInfoHeader->Width);
-	}
-	// Read in image data to array
-	for (int i = 0; i < pInfoHeader->Height; i++)
-	{
-		for (int j = 0; j < pInfoHeader->Width; j++)
-		{
-			fread(&pImage[i][j].Red, sizeof(pPixel->Red), 1, inFile);
-			fread(&pImage[i][j].Green, sizeof(pPixel->Green), 1, inFile);
-			fread(&pImage[i][j].Blue, sizeof(pPixel->Blue), 1, inFile);
-			//fread(&pImage[i][j].junk, sizeof(pPixel->junk), 1, inFile);
-		}
-	}
-	return pImage;
+	this->offset = this->FileInfo->bfOffBits;
+	this->width = this->PictureInfo->biWidth;
+	this->height = this->PictureInfo->biHeight;
 }
-Image * BMPtoImage(char * FileName, Image * readyImage)
+int Image::GetHeight()
 {
-	FILE *inFile;
-	readyImage->pHeader = (HEADER *)malloc(sizeof(HEADER));
-	readyImage->Info = (INFOHEADER *)malloc(sizeof(INFOHEADER));
-	readyImage->tab = (PIXEL *)malloc(sizeof(PIXEL));
-	inFile = fopen(FileName, "rb");
-	if (inFile == NULL)
-	{
-		printf("Nie mozna odczytac pliku.\n");
+	return this->height;
+}
+int Image::GetWidth()
+{
+	return this->width;
+}
+int Image::GetOffSet()
+{
+	return this->offset;
+}
+char** Image::makeBitmap(const char* inputName)
+{
+	std::ifstream iStream(inputName, std::ios::binary);
+	if (iStream.good()) {
+		char* tempVar = new char[sizeof(BITMAPFILEHEADER)];  
+		iStream.read(tempVar, sizeof(BITMAPFILEHEADER));
+		*FileInfo = *(BITMAPFILEHEADER*)(tempVar);         
+															
+		tempVar = new char[sizeof(BITMAPINFOHEADER)];       
+		iStream.read(tempVar, sizeof(BITMAPINFOHEADER));
+		*PictureInfo = *(BITMAPINFOHEADER*)(tempVar);       
+
+		iStream.seekg(FileInfo->bfOffBits, std::ios::beg);
+
 	
-		free(readyImage->pHeader);
-		free(readyImage->Info);
-		free(readyImage->tab);
-		return 0;
-	}
-	readyImage->pHeader = Read_BMP_Header(inFile, readyImage->pHeader);
-	readyImage->Info = Read_BMP_Info(inFile, readyImage->Info);
-	readyImage->pPixel = (PIXEL **)malloc(sizeof(PIXEL *) * readyImage->Info->Height);
-	readyImage->pCopy = (PIXEL **)malloc(sizeof(PIXEL *) * readyImage->Info->Height);
-	readyImage->pPixel = Read_BMP_Pixel(inFile, readyImage->pHeader, readyImage->Info, readyImage->tab, readyImage->pPixel);
-	readyImage->pCopy = Read_BMP_Pixel(inFile, readyImage->pHeader, readyImage->Info, readyImage->tab, readyImage->pCopy);
-	fclose(inFile);
-	return readyImage;
+		int charCount = 3 * PictureInfo->biHeight * PictureInfo->biWidth;
+		char* fileData = new char[charCount];
 
-}
-void Write_BMP_Header(FILE * outFile, HEADER *pHeader)
-{
-	fwrite(&pHeader->Signature, sizeof(pHeader->Signature), 1, outFile);
-	fwrite(&pHeader->Reserved1, sizeof(pHeader->Reserved1), 1, outFile);
-	fwrite(&pHeader->Reserved2, sizeof(pHeader->Reserved2), 1, outFile);
-	fwrite(&pHeader->DataOffSet, sizeof(pHeader->DataOffSet), 1, outFile);
-}
-void Write_BMP_Info(FILE * outFile, INFOHEADER * pInfoHeader)
-{
-	fwrite(&pInfoHeader->Size, sizeof(pInfoHeader->Size), 1, outFile);
-	fwrite(&pInfoHeader->Width, sizeof(pInfoHeader->Width), 1, outFile);
-	fwrite(&pInfoHeader->Height, sizeof(pInfoHeader->Height), 1, outFile);
-	fwrite(&pInfoHeader->Planes, sizeof(pInfoHeader->Planes), 1, outFile);
-	fwrite(&pInfoHeader->BitsPerPixel, sizeof(pInfoHeader->BitsPerPixel), 1, outFile);
-	fwrite(&pInfoHeader->Compression, sizeof(pInfoHeader->Compression), 1, outFile);
-	fwrite(&pInfoHeader->SizeImage, sizeof(pInfoHeader->SizeImage), 1, outFile);
-	fwrite(&pInfoHeader->XPixelsPreMeter, sizeof(pInfoHeader->XPixelsPreMeter), 1, outFile);
-	fwrite(&pInfoHeader->YPixelsPreMeter, sizeof(pInfoHeader->YPixelsPreMeter), 1, outFile);
-	fwrite(&pInfoHeader->ColorsUsed, sizeof(pInfoHeader->ColorsUsed), 1, outFile);
-	fwrite(&pInfoHeader->ColorsImportant, sizeof(pInfoHeader->ColorsImportant), 1, outFile);
-}
-void Write_BMP_Pixel(FILE * outFile, HEADER *pHeader, INFOHEADER *pInfoHeader, PIXEL *pPixel, PIXEL **pImage)
-{
-	for (int i = 0; i < pInfoHeader->Height; i++)
-	{
-		for (int j = 0; j < pInfoHeader->Width; j++)
-		{
-			fwrite(&pImage[i][j].Blue, sizeof(pPixel->Blue), 1, outFile);
-			fwrite(&pImage[i][j].Green, sizeof(pPixel->Green), 1, outFile);
-			fwrite(&pImage[i][j].Red, sizeof(pPixel->Red), 1, outFile);
+		int countOfPix = PictureInfo->biHeight * PictureInfo->biWidth;
 
+		char** mapOfPixel = new char*[countOfPix];
+		for (int i = 0; i < countOfPix; i++) {
+			mapOfPixel[i] = new char[3];
 		}
+
+		
+		iStream.seekg(FileInfo->bfOffBits);
+		iStream.read(fileData, charCount * sizeof(char));
+		iStream.close();
+
+		int dataIterator = 0;
+		for (int i = 0; i < countOfPix; i++) {
+			for (int j = 0; j < 3; j++) {
+				mapOfPixel[i][j] = fileData[dataIterator];
+				dataIterator++;
+			}
+		}
+
+		width = PictureInfo->biWidth;
+		height = PictureInfo->biHeight;
+
+		return mapOfPixel;
+	}
+	else {
+		return false;
+		return NULL;
 	}
 }
-void WriteBMP(char * FileName, Image * pImage)
+
+
+void Image::saveBitmap(std::string outputName)
 {
-	FILE *outFile;
-	outFile = fopen(FileName, "wb");
-	if (outFile == NULL)
-	{
-		printf("Can't open output file for writing.\n");
-		return;
+	int charCount = 3 * PictureInfo->biHeight * PictureInfo->biWidth;
+	char* saveTab = new char[charCount];
+
+	int x = 0;
+	for (int i = 0; i < charCount / 3; i++)
+		for (int j = 0; j < 3; j++)
+		{
+			saveTab[x] = negative[i][j];
+			x++;
+		}
+
+	std::ofstream oStream(outputName, std::ios::binary);
+	oStream.write((char*)FileInfo, sizeof(BITMAPFILEHEADER));
+	oStream.write((char*)PictureInfo, sizeof(BITMAPINFOHEADER));
+
+	if (oStream.good()) {
+		oStream.write(saveTab, charCount * sizeof(char));
+		oStream.close();
 	}
-	Write_BMP(outFile, pImage->pHeader, pImage->Info, pImage->tab, pImage->pCopy);
-	fclose(outFile);
-}
-void Write_BMP(FILE * outFile, HEADER *pHeader, INFOHEADER *pInfoHeader, PIXEL *pPixel, PIXEL **pImage)
-{
-	Write_BMP_Header(outFile, pHeader);
-	Write_BMP_Info(outFile, pInfoHeader);
-	Write_BMP_Pixel(outFile, pHeader, pInfoHeader, pPixel, pImage);
-}
-void DeleteImage(Image * pImage)
-{
-	for (int i = 0; i < pImage->Info->Height; i++)
-	{
-		free(pImage->pPixel[i]);
-	}
-	for (int i = 0; i < pImage->Info->Height; i++)
-	{
-		free(pImage->pCopy[i]);
-	}
-	free(pImage->pPixel);
-	free(pImage->pCopy);
-	free(pImage->pHeader);
-	free(pImage->Info);
-	free(pImage->tab);
+
+	delete saveTab;
 }

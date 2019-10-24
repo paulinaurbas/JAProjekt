@@ -9,22 +9,59 @@
 
 #include <iostream>
 extern "C" int _stdcall MyProc1(DWORD x, DWORD y);
-
+#include <wingdi.h>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <array>
 #include <vector>
 #include <iterator>
+#include <thread>
+#include <string>
+#include <list>
+#include <algorithm>
 
-
-
-int _tmain(int argc, _TCHAR* argv[])
+int main(int argc, char * argv[])
 {
-/*	int x = 3, y = 4, z = 0;
-	z = MyProc1(x, y);  // wywo³anie procedury asemblerowej z biblioteki
-	std::cout << z << std::endl;
-	*/
+	Image p1("Holi.bmp");
+	p1.saveBitmap("Holi1.bmp");
+	unsigned currentThreatsSupported = std::thread::hardware_concurrency();
+	int threadAmount = currentThreatsSupported;
+	int rowsperthread = p1.GetHeight()/ threadAmount; //ilosc wierszy na watek
+	int byteperrow = p1.GetWidth() * 3 + p1.GetWidth() % 4; //ilosc bitow na wiersz
+	int bytesperthread = rowsperthread * byteperrow; //ilosc bitow na watek
+	int excess = p1.GetHeight() - rowsperthread * threadAmount; //pozostale bity
+	int k = 0;
+	std::thread ** myThread;
+	myThread = new std::thread *[threadAmount];
+
+	for (int i = 0; i < threadAmount; i++)
+	{
+		int begin = bytesperthread * i + p1.GetOffSet() + k * byteperrow;
+		int end = begin + bytesperthread;
+		if (excess > 0) //czy zostal jakis wiersz w nadmiarze
+		{
+			end += byteperrow;
+			--excess;
+			++k;
+		}
+		myThread[i] = new std::thread();
+			//tutaj wsadz swoja fukncje
+
+	}
+	for (int i = 0; i < threadAmount; i++)
+	{
+		myThread[i]->join();
+	}
+	for (int i = 0; i < threadAmount; i++)
+	{
+		delete myThread[i];
+
+	}
+	delete myThread;
+	
+	MyProc1(1, 2);
+
 	
 	
 	return 0;

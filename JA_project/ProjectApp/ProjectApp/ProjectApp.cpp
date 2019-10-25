@@ -8,7 +8,7 @@
 #include <windows.h>
 
 #include <iostream>
-extern "C" int _stdcall MyProc1(DWORD x, DWORD y);
+extern "C" int _stdcall MyProc1();
 #include <wingdi.h>
 #include <fstream>
 #include <iostream>
@@ -20,7 +20,10 @@ extern "C" int _stdcall MyProc1(DWORD x, DWORD y);
 #include <string>
 #include <list>
 #include <algorithm>
-
+void PrintName()
+{
+	std::cout << "Test" << std::endl;
+}
 int main(int argc, char * argv[])
 {
 	Image p1("Holi.bmp");
@@ -45,8 +48,7 @@ int main(int argc, char * argv[])
 			--excess;
 			++k;
 		}
-		myThread[i] = new std::thread();
-			//tutaj wsadz swoja fukncje
+		myThread[i] = new std::thread(PrintName);		//tutaj wsadz swoja fukncje
 
 	}
 	for (int i = 0; i < threadAmount; i++)
@@ -60,7 +62,7 @@ int main(int argc, char * argv[])
 	}
 	delete myThread;
 	
-	MyProc1(1, 2);
+	MyProc1();
 
 	
 	

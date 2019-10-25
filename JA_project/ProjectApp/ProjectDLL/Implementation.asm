@@ -12,18 +12,28 @@ DllEntry PROC hInstDLL:HINSTANCE, reason:DWORD, reserved1:DWORD
 mov eax, TRUE 
 ret
 DllEntry ENDP
-;------------------------------------------------------------------------- 
-;To jest przyk³adowa funkcja. Jest tutaj, aby pokazaæ, ;gdzie nale¿y umieszczaæ w³asne funkcje w bibliotece DLL
-;-------------------------------------------------------------------------
 ; Arguments:
-; RCX - address of first byte in bitmap array
-; RDX - begin of portion to convert - this must be the beginning of row
-; R8 - end of portion to convert
-; R9 - width
+; ECX - address of first byte in bitmap array
+; EDX - begin of portion to convert - this must be the beginning of row
+; E8 - end of portion to convert
+; E9 - width
 
-MyProc1 PROC
-PUSH ESI ;save RSI
-MOV ESI,ECX ;first argument to RSI - begin of array
-ADD ESI, EDX ;Add begin to RSI
+MyProc1 PROC 
+PUSH ESI ;save R
+MOV ESI,ECX ;wskaznik z obrzkiem
+ADD ESI, EDX ;bit from whitch start
+;ADD E8, ECX
+;MOV EAX, E9 ;RAX = width
+
+;NegativeLoop:
+;cmp esi, ecx
+;jae negativeEndLoop
+;movq mm0, [esi] ; pobierz z tablicy 56 bajt 
+;movq mm1, [esi+8] 
+;movq mm2, [esi+16]
+;movq mm3, [esi+24]
+;movq mm4, [esi+32]
+;movq mm5, [esi+40]
+;movq mm6, [esi+48]
 MyProc1 endp
 END DllEntry ;-------------------------------------------------------------------------

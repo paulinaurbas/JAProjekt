@@ -1,3 +1,3 @@
 LIBRARY SLL_ASM
-EXPORTS BitmapConvert
+EXPORTS MyProc1 (byte img [], int begin, int end, int width)
 

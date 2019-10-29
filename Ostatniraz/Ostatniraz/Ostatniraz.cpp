@@ -1,15 +1,70 @@
 // Ostatniraz.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#include <windows.h>
+
 #include "pch.h"
 #include <iostream>
-#include <windows.h>
+extern "C" int _stdcall MyProc1(byte img[], int begin, int end, int width);
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <array>
+#include <vector>
+#include <iterator>
+#include <thread>
+#include <string>
+#include <list>
+#include <algorithm>
 #include "tchar.h"
-extern "C" int _stdcall BitmapConvert();
-int main()
+#include "BMPRead.h"
+void PrintName()
 {
-    std::cout << "Hello World!\n"; 
-	BitmapConvert();
+	std::cout << "Test" << std::endl;
+}
+int main(int argc, char * argv[])
+{
+	Image p1("Holi.bmp");
+   p1.saveBitmap("Holi1.bmp");
+	int currentThreatsSupported = std::thread::hardware_concurrency();
+	int threadAmount = currentThreatsSupported;
+	int rowsperthread = p1.GetHeight() / threadAmount; //ilosc wierszy na watek
+	int byteperrow = p1.GetWidth() * 3 + p1.GetWidth() % 4; //ilosc bitow na wiersz
+	int bytesperthread = rowsperthread * byteperrow; //ilosc bitow na watek
+	int excess = p1.GetHeight() - rowsperthread * threadAmount; //pozostale bity
+	int k = 0;
+	std::thread ** myThread;
+	myThread = new std::thread *[threadAmount];
+
+	for (int i = 0; i < threadAmount; i++)
+	{
+		int begin = bytesperthread * i + p1.GetOffSet() + k * byteperrow;
+		int end = begin + bytesperthread;
+		if (excess > 0) //czy zostal jakis wiersz w nadmiarze
+		{
+			end += byteperrow;
+			--excess;
+			++k;
+		}
+		//myThread[i] = new std::thread(MyProc1(bitmaparray, begin, end, width));		//tutaj wsadz swoja fukncje
+
+	}
+	for (int i = 0; i < threadAmount; i++)
+	{
+		//myThread[i]->join();
+	}
+	for (int i = 0; i < threadAmount; i++)
+	{
+		//delete myThread[i];
+
+	}
+	//delete myThread;
+
+	MyProc1();
+
+
+
+	return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

@@ -5,10 +5,13 @@ VisualStudioVersion = 15.0.28307.902
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ostatniraz", "Ostatniraz\Ostatniraz.vcxproj", "{7016EB53-EB76-4A68-9B71-05E8DD0DB1F7}"
 	ProjectSection(ProjectDependencies) = postProject
+		{D0A4562D-FCA0-48B1-903A-6FC068287E66} = {D0A4562D-FCA0-48B1-903A-6FC068287E66}
 		{433F399C-E6B4-4B03-8E3A-AA22B760E504} = {433F399C-E6B4-4B03-8E3A-AA22B760E504}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SLL_ASM", "SLL_ASM\SLL_ASM.vcxproj", "{433F399C-E6B4-4B03-8E3A-AA22B760E504}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DllinC", "DllinC\DllinC.vcxproj", "{D0A4562D-FCA0-48B1-903A-6FC068287E66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +37,14 @@ Global
 		{433F399C-E6B4-4B03-8E3A-AA22B760E504}.Release|x64.Build.0 = Release|x64
 		{433F399C-E6B4-4B03-8E3A-AA22B760E504}.Release|x86.ActiveCfg = Release|Win32
 		{433F399C-E6B4-4B03-8E3A-AA22B760E504}.Release|x86.Build.0 = Release|Win32
+		{D0A4562D-FCA0-48B1-903A-6FC068287E66}.Debug|x64.ActiveCfg = Debug|x64
+		{D0A4562D-FCA0-48B1-903A-6FC068287E66}.Debug|x64.Build.0 = Debug|x64
+		{D0A4562D-FCA0-48B1-903A-6FC068287E66}.Debug|x86.ActiveCfg = Debug|Win32
+		{D0A4562D-FCA0-48B1-903A-6FC068287E66}.Debug|x86.Build.0 = Debug|Win32
+		{D0A4562D-FCA0-48B1-903A-6FC068287E66}.Release|x64.ActiveCfg = Release|x64
+		{D0A4562D-FCA0-48B1-903A-6FC068287E66}.Release|x64.Build.0 = Release|x64
+		{D0A4562D-FCA0-48B1-903A-6FC068287E66}.Release|x86.ActiveCfg = Release|Win32
+		{D0A4562D-FCA0-48B1-903A-6FC068287E66}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

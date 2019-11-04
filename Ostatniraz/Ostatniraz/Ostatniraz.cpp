@@ -5,7 +5,8 @@
 
 #include "pch.h"
 #include <iostream>
-extern "C" int _stdcall MyProc1(byte img[], int begin, int end, int width);
+extern "C" int _stdcall MyProc1();
+extern "C" void _stdcall Negative(char* bmp, int begin, int end);
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -18,62 +19,64 @@ extern "C" int _stdcall MyProc1(byte img[], int begin, int end, int width);
 #include <algorithm>
 #include "tchar.h"
 #include "BMPRead.h"
+
 void PrintName()
 {
 	std::cout << "Test" << std::endl;
 }
+
 int main(int argc, char * argv[])
 {
-	Image p1("Holi.bmp");
-   p1.saveBitmap("Holi1.bmp");
+	Image p1("Holi1.bmp");
+	std::vector<std::thread*>threads;
 	int currentThreatsSupported = std::thread::hardware_concurrency();
 	int threadAmount = currentThreatsSupported;
-	int rowsperthread = p1.GetHeight() / threadAmount; //ilosc wierszy na watek
-	int byteperrow = p1.GetWidth() * 3 + p1.GetWidth() % 4; //ilosc bitow na wiersz
-	int bytesperthread = rowsperthread * byteperrow; //ilosc bitow na watek
-	int excess = p1.GetHeight() - rowsperthread * threadAmount; //pozostale bity
-	int k = 0;
-	std::thread ** myThread;
-	myThread = new std::thread *[threadAmount];
+	int height = p1.GetHeight();
+	int width = p1.GetWidth();
+	int iterator = 0;
+	int * tabwithheight = new int[threadAmount];
+	for (int i = 0; i < threadAmount; i++)
+	{
+		tabwithheight[i] = 0;
+	}
+	while (height)
+	{
+		height--;
+		tabwithheight[iterator]++;
+		iterator == threadAmount - 1 ? iterator = 0 : iterator++;
+	}
 
 	for (int i = 0; i < threadAmount; i++)
 	{
-		int begin = bytesperthread * i + p1.GetOffSet() + k * byteperrow;
-		int end = begin + bytesperthread;
-		if (excess > 0) //czy zostal jakis wiersz w nadmiarze
-		{
-			end += byteperrow;
-			--excess;
-			++k;
-		}
-		//myThread[i] = new std::thread(MyProc1(bitmaparray, begin, end, width));		//tutaj wsadz swoja fukncje
-
+		threads.push_back(new std::thread([=] {
+			Negative(p1.Data, i * sizeof(char)*tabwithheight[i]*width, tabwithheight[i] * width);
+		}));
 	}
 	for (int i = 0; i < threadAmount; i++)
 	{
-		//myThread[i]->join();
+		threads[i]->join();
+		threads[i] ? delete threads[i],true : false;
+		threads[i] = nullptr;
 	}
+
 	for (int i = 0; i < threadAmount; i++)
 	{
-		//delete myThread[i];
-
+		threads.pop_back();
 	}
-	//delete myThread;
-
-	MyProc1();
-
+	p1.saveBitmap("Holi.bmp");
 
 
 	return 0;
+
+
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+
+
+
+
+
+
+
+

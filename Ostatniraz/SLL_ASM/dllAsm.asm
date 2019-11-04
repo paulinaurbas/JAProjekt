@@ -23,9 +23,6 @@ ADD R8, RCX
 MOV RAX, R9 ;RAX = width
 XOR RDX, RDX
 PUSH RBX ;save RBX
-MOV RBX, 4
-DIV BX ;width/4
-MOV R11, RDX ;#? R11 = width % 4
 PUSH RDI
 XOR RDI, RDI
 emms

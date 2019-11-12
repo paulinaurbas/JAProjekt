@@ -10,7 +10,7 @@ extern "C"
 	// bmp - address of first byte in bitmap array
 	// begin - begin of portion to convert - this must be the beginning of row
 	// end - end of portion to convert
-	// width - width
+
 	__declspec(dllexport) void Negative(char* bmp, int begin, int end)
 	{
 		int i;

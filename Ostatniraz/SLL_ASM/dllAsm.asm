@@ -13,14 +13,12 @@ DllEntry ENDP
 ; RCX - address of first byte in bitmap array
 ; RDX - begin of portion to convert - this must be the beginning of row
 ; R8 - end of portion to convert
-; R9 - width
 
 MyProc1 PROC 
 PUSH RSI ;save RSI
 MOV RSI,RCX ;first argument to RSI - begin of array
 ADD RSI, RDX ;Add begin to RSI
 ADD R8, RCX
-MOV RAX, R9 ;RAX = width
 XOR RDX, RDX
 PUSH RBX ;save RBX
 PUSH RDI
@@ -68,7 +66,6 @@ jng negativeEndLoop
 sub ecx, 4
 jmp negativeSmallLoop
 negativeSmallLoopEnd:
-
 
 ret
 MyProc1 endp

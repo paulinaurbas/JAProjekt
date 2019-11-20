@@ -64,7 +64,7 @@ char* Image::makeBitmap(const char* inputName)
 
 
 		int charCount = 3 * PictureInfo->biHeight * PictureInfo->biWidth;
-		char* fileData = new char[charCount];
+		char* fileData = new char[charCount*15];
 
 		int countOfPix = PictureInfo->biHeight * PictureInfo->biWidth;
 		tempVar = new char[countOfPix * 3];

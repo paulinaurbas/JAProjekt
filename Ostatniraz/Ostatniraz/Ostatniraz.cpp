@@ -5,7 +5,7 @@
 
 #include "pch.h"
 #include <iostream>
-extern "C" int _stdcall MyProc1();
+extern "C" int _stdcall MyProc1(char* bmp, int begin, int en);
 extern "C" void _stdcall Negative(char* bmp, int begin, int end);
 #include <fstream>
 #include <iostream>
@@ -46,10 +46,17 @@ int main(int argc, char * argv[])
 		iterator == threadAmount - 1 ? iterator = 0 : iterator++;
 	}
 
-	for (int i = 0; i < threadAmount; i++)
+	/*for (int i = 0; i < threadAmount; i++)
 	{
 		threads.push_back(new std::thread([=] {
 			Negative(p1.Data, i * sizeof(char)*tabwithheight[i]*width, tabwithheight[i] * width);
+		}));
+	}*/
+	
+	for (int i = 0; i < threadAmount; i++)
+	{
+		threads.push_back(new std::thread([=] {
+			MyProc1(p1.Data, i * sizeof(char)*tabwithheight[i] * width, tabwithheight[i] * width);
 		}));
 	}
 	for (int i = 0; i < threadAmount; i++)

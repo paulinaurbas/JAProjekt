@@ -16,57 +16,64 @@ DllEntry ENDP
 
 MyProc1 PROC 
 PUSH RSI ;save RSI
-MOV RSI,RCX ;first argument to RSI - begin of array
-ADD RSI, RDX ;Add begin to RSI
-ADD R8, RCX
-XOR RDX, RDX
-PUSH RBX ;save RBX
-PUSH RDI
-XOR RDI, RDI
+PUSH rax
+PUSH rbx
+mov rsi, rcx 
+mov rax, RDX ;do rax pierwszy bit od ktorego zaczniemy 
+add rax, R8 ;do rax dodajemy ostatni bit
+mov rdx, 3 ;wartosc 3 do rdx
+mul rdx ;RAX <- wielkosc obrazka w bajtach
+add rax, rsi
+mov rbx, 56
+sub rax, rbx ;rax <- licznik petli 
 emms
-pcmpeqd MM7, MM7
-NegativeLoop:
-cmp rsi, rcx
-jae negativeEndLoop
-movq mm0, [rsi] ; pobierz z tablicy 56 bajt 
-movq mm1, [rsi+8] 
-movq mm2, [rsi+16]
-movq mm3, [rsi+24]
-movq mm4, [rsi+32]
-movq mm5, [rsi+40]
-movq mm6, [rsi+48]
-pxor mm0, mm7
-pxor mm1, mm7
-pxor mm2, mm7
-pxor mm3, mm7
-pxor mm4, mm7
-pxor mm5, mm7
-pxor mm6, mm7
-movq [rsi], mm0
-movq [rsi+8], mm1
-movq [rsi+16], mm2
-movq [rsi+24], mm3
-movq [rsi+32], mm4
-movq [rsi+40], mm5
-movq [rsi+48], mm6
-add rsi, rbx
-jmp NegativeLoop
-negativeEndLoop:
-emms
-add rcx, rbx
-sub rcx, rsi 
-mov rbx, 0FFFFFFFFh
-sub rcx, 4
-negativeSmallLoop:
-cmp rcx, 0
-jng negativeEndLoop
-;mov dword ptr [rsi +rcx]
-;xor rax, ebx
-;mov dword ptr [rsi +rcx]
-sub ecx, 4
-jmp negativeSmallLoop
-negativeSmallLoopEnd:
+PCMPEQW xmm7, xmm7
+NegativeMainLoop:
+cmp rsi, rax 
+jae endNegativeLoop
+movdqu xmm0, [rsi]
+movdqu xmm1, [rsi+8]
+movdqu xmm2, [rsi+16]
+movdqu xmm3, [rsi+24]
+movdqu xmm4, [rsi+32]
+movdqu xmm5, [rsi+40]
+movdqu xmm6, [rsi+48]
 
+pxor xmm0, xmm7
+pxor xmm1, xmm7
+pxor xmm2, xmm7
+pxor xmm3, xmm7
+pxor xmm4, xmm7
+pxor xmm5, xmm7
+pxor xmm6, xmm7
+
+movdqu [rsi], xmm0
+movdqu [rsi+8], xmm1 
+movdqu [rsi+16], xmm2
+movdqu [rsi+24], xmm3 
+movdqu [rsi+32], xmm4
+movdqu [rsi+40], xmm5
+movdqu [rsi+48], xmm6 
+add rsi, rbx
+jmp NegativeMainLoop
+endNegativeLoop:
+emms
+add rax, rbx
+sub rax, rsi
+mov rbx, 0FFFFFFFFh
+sub ecx, 4
+negativeSmallLoop:
+cmp rax, 0
+jng endSmallLoop
+mov rdx, [rsi +rax] 
+xor rdx, rbx 
+mov [rsi +rax], rdx
+sub rax, 4
+jmp negativeSmallLoop
+endSmallLoop:
+POP RBX
+POP RSI
+POP RAX
 ret
 MyProc1 endp
 END;-------------------------------------------------------------------------

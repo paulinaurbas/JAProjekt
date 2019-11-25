@@ -11,21 +11,30 @@ ret
 DllEntry ENDP
 ; Arguments:
 ; RCX - address of first byte in bitmap array
-; RDX - begin of portion to convert - this must be the beginning of row
-; R8 - end of portion to convert
+; RDX - width
+; R8 - wysokosc
 
 MyProc1 PROC 
 PUSH RSI ;save RSI
 PUSH rax
 PUSH rbx
-mov rsi, rcx 
-mov rax, RDX ;do rax pierwszy bit od ktorego zaczniemy 
-add rax, R8 ;do rax dodajemy ostatni bit
-mov rdx, 3 ;wartosc 3 do rdx
-mul rdx ;RAX <- wielkosc obrazka w bajtach
+mov rax, rdx ;szerokosc 
+mov rbx, R8 ;wysokosc
+mul rbx
+mov rdx, 3 
+mul rdx
+mov rsi, rcx
 add rax, rsi
 mov rbx, 56
-sub rax, rbx ;rax <- licznik petli 
+sub rax, rbx 
+;mov rsi, rcx ;do rsi leci adres pierwszego bitu
+;mov rax, RDX ;do rax pierwszy bit od ktorego zaczniemy 
+;add rax, R8 ;do rax dodajemy ostatni bit
+;mov rdx, 3 ;wartosc 3 do rdx
+;mul rdx ;RAX <- wielkosc obrazka w bajtach
+;add rax, rsi
+;mov rbx, 56
+;sub rax, rbx ;rax <- licznik petli 
 emms
 PCMPEQW xmm7, xmm7
 NegativeMainLoop:

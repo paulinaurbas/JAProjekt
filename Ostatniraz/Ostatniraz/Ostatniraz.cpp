@@ -56,7 +56,14 @@ int main(int argc, char * argv[])
 	for (int i = 0; i < threadAmount; i++)
 	{
 		threads.push_back(new std::thread([=] {
-			MyProc1(p1.Data, i * sizeof(char)*tabwithheight[i] * width, tabwithheight[i] * width);
+			int currentheight = 0;
+			for (int j = 0; j < i; j++)
+			{
+				currentheight += tabwithheight[j];
+			}
+			int offset = ((width * 3 * 4) % 3 + width * 3)*currentheight;
+
+			MyProc1(p1.Data+offset, width, tabwithheight[i]);
 		}));
 	}
 	for (int i = 0; i < threadAmount; i++)

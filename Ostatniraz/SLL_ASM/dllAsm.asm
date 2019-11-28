@@ -25,8 +25,12 @@ mov rdx, 3
 mul rdx
 mov rsi, rcx
 add rax, rsi
-mov rbx, 56
+mov rbx, 16
 sub rax, rbx 
+
+
+
+
 ;mov rsi, rcx ;do rsi leci adres pierwszego bitu
 ;mov rax, RDX ;do rax pierwszy bit od ktorego zaczniemy 
 ;add rax, R8 ;do rax dodajemy ostatni bit
@@ -41,28 +45,28 @@ NegativeMainLoop:
 cmp rsi, rax 
 jae endNegativeLoop
 movdqu xmm0, [rsi]
-movdqu xmm1, [rsi+8]
-movdqu xmm2, [rsi+16]
-movdqu xmm3, [rsi+24]
-movdqu xmm4, [rsi+32]
-movdqu xmm5, [rsi+40]
-movdqu xmm6, [rsi+48]
+;movdqu xmm1, [rsi+8]
+;movdqu xmm2, [rsi+16]
+;movdqu xmm3, [rsi+24]
+;movdqu xmm4, [rsi+32]
+;movdqu xmm5, [rsi+40]
+;movdqu xmm6, [rsi+48]
 
 pxor xmm0, xmm7
-pxor xmm1, xmm7
-pxor xmm2, xmm7
-pxor xmm3, xmm7
-pxor xmm4, xmm7
-pxor xmm5, xmm7
-pxor xmm6, xmm7
+;pxor xmm1, xmm7
+;pxor xmm2, xmm7
+;pxor xmm3, xmm7
+;pxor xmm4, xmm7
+;pxor xmm5, xmm7
+;pxor xmm6, xmm7
 
 movdqu [rsi], xmm0
-movdqu [rsi+8], xmm1 
-movdqu [rsi+16], xmm2
-movdqu [rsi+24], xmm3 
-movdqu [rsi+32], xmm4
-movdqu [rsi+40], xmm5
-movdqu [rsi+48], xmm6 
+;movdqu [rsi+8], xmm1 
+;movdqu [rsi+16], xmm2
+;movdqu [rsi+24], xmm3 
+;movdqu [rsi+32], xmm4
+;movdqu [rsi+40], xmm5
+;movdqu [rsi+48], xmm6 
 add rsi, rbx
 jmp NegativeMainLoop
 endNegativeLoop:

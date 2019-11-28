@@ -34,4 +34,5 @@ public:
 	char * makeBitmap(const char* inputName);
 	//** makeBitmap(const char* inputName);
 	void saveBitmap(std::string inputName);
+	int Time();
 };

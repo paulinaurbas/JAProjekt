@@ -146,7 +146,14 @@ char* Image::makeBitmap(const char* inputName)
 	}
 }*/
 
-
+int Time()
+{
+	auto start = std::chrono::high_resolution_clock::now();
+	auto stop = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+	int totalTime = duration.count();
+	return totalTime;
+}
 void Image::saveBitmap(std::string outputName)
 {
 	int charCount = 3 * PictureInfo->biHeight * PictureInfo->biWidth;

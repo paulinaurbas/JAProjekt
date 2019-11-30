@@ -1,9 +1,7 @@
 ;-------------------------------------------------------------------------
 
 .data 
-_blue	dq	0.299
-_green	dq	0.587
-_red	dq	0.114	
+
 .CODE
 DllEntry PROC hInstDLL:DWORD, reason:DWORD, reserved1:DWORD
 mov eax, 1h
@@ -16,46 +14,46 @@ DllEntry ENDP
 
 MyProc1 PROC 
 PUSH RSI ;save RSI
-PUSH rax
-PUSH rbx
-mov rax, rdx ;szerokosc 
-mov rbx, R8 ;wysokosc
-mul rbx
+PUSH rax ;save RAX
+PUSH rbx ;save RBX
+mov rax, rdx ;width 
+mov rbx, R8 ;height
+mul rbx ;RAX <- picture size in points
 mov rdx, 3 
-mul rdx
-mov rsi, rcx
-add rax, rsi
-mov rbx, 16
-sub rax, rbx 
+mul rdx ;RAX <- picture size in baits 
+mov rsi, rcx ;pointer to bitmap array 
+add rax, rsi ;counter big loop
+mov rbx, 16 
+sub rax, rbx ;RAX <- big loop counter 
  
 emms
-PCMPEQW xmm7, xmm7
+PCMPEQW xmm7, xmm7 ;mm7 <- 0ffffffffffffffffh
 NegativeMainLoop:
 cmp rsi, rax 
 jae endNegativeLoop
-movdqu xmm0, [rsi]
-pxor xmm0, xmm7
-movdqu [rsi], xmm0
-add rsi, rbx
-jmp NegativeMainLoop
+movdqu xmm0, [rsi] ;take from table 16 
+pxor xmm0, xmm7 ;transfrom to negative
+movdqu [rsi], xmm0 ;save to table
+add rsi, rbx ;add 16 to pointer counter array
+jmp NegativeMainLoop 
 endNegativeLoop:
 emms
-add rax, rbx
-sub rax, rsi
-mov rbx, 0FFFFFFFFh
+add rax, rbx ;RAX pointing last bajt in array
+sub rax, rsi ;rax <- amount of bites to transform
+mov rbx, 0FFFFFFFFh 
 sub rcx, 4
 negativeSmallLoop:
-cmp rax, 0
+cmp rax, 0 ;check is there any bites to transform 
 jng endSmallLoop
-mov rdx, [rsi +rax] 
-xor rdx, rbx 
-mov [rsi +rax], rdx
-sub rax, 4
+mov rdx, [rsi +rax]  ;all times to the end
+xor rdx, rbx ;RDX xor 0fffffffffh
+mov [rsi +rax], rdx ;save tranformt bites to array
+sub rax, 4 ;next 4 bites
 jmp negativeSmallLoop
 endSmallLoop:
-POP RAX
-POP RBX
-POP RSI
+POP RAX ;returning register 
+POP RBX ;returing register
+POP RSI ;returing register
 ret
 MyProc1 endp
 END;-------------------------------------------------------------------------

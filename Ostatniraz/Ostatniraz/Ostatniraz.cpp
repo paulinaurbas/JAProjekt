@@ -22,14 +22,14 @@ extern "C" void _stdcall Negative(char* bmp, int begin, int end);
 
 int main(int argc, char * argv[])
 {
-	int terminalnumber = TerminalCheck(argc, argv);
-	if (terminalnumber == 1)
+	int terminalnumber = TerminalCheck(argc, argv); //check params 
+	if (terminalnumber == 1) //check if argv is empty 
 	{
 		std::cout << "Nie poprawnie podana sciezka" << std::endl;
 		Help();
 		return 0;
 	}
-
+	//check if file with picture exist 
 	bool check = checkIfExist(argv[2]);
 	if (check == false)
 	{
@@ -38,8 +38,8 @@ int main(int argc, char * argv[])
 		return 0;
 	}
 
-	
-	else if (terminalnumber == 0) //domyœlna iloœæ w¹tków
+	//procedure for optimal threat amount
+	else if (terminalnumber == 0) 
 	{
 		Image p1(argv[2]);
 		std::vector<std::thread*>threads;
@@ -60,7 +60,7 @@ int main(int argc, char * argv[])
 			iterator == threadAmount - 1 ? iterator = 0 : iterator++;
 		}
 		auto start = std::chrono::high_resolution_clock::now();
-			if (strcmp(argv[5], "-1")) //dla C
+			if (strcmp(argv[5], "-1")) //for C
 			{
 				for (int i = 0; i < threadAmount; i++)
 				{
@@ -69,7 +69,7 @@ int main(int argc, char * argv[])
 					}));
 				}
 			}
-			else //dla ASM
+			else //for ASM
 			{
 				for (int i = 0; i < threadAmount; i++)
 				{
@@ -106,7 +106,7 @@ int main(int argc, char * argv[])
 
 
 	}
-	else // iloœæ w¹tków od u¿ytkownika 
+	else //threat amount from user
 	{
 
 		Image p1(argv[2]);
@@ -139,7 +139,7 @@ int main(int argc, char * argv[])
 			}
 			std::cout << argv[5] << std::endl;
 			auto start = std::chrono::high_resolution_clock::now();
-			if (strcmp(argv[5], "-1") == 0) //dla C
+			if (strcmp(argv[5], "-1") == 0) //for C
 			{
 
 				for (int i = 0; i < threadAmount; i++)
@@ -150,7 +150,7 @@ int main(int argc, char * argv[])
 				}
 
 			}
-			else
+			else //for assembler 
 			{
 				for (int i = 0; i < threadAmount; i++)
 				{

@@ -21,13 +21,21 @@ int TerminalCheck(int argc, char * argv[])
 {
 	if (argc > 1)
 	{
-		if (argc < 9 && strcmp(argv[1], "-i") == 0 && strcmp(argv[3], "-o") == 0)
+		if (argc == 6)
+		{
+			return 0;
+		}
+		else if (argc == 8 && strcmp(argv[1], "-i") == 0 && strcmp(argv[3], "-o") == 0)
 		{
 			if (strcmp(argv[6], "-t") == 0)
 			{
 				return 2;
 			}
 			return 0;
+		}
+		else
+		{
+			return 1;
 		}
 	}
 	else
@@ -46,4 +54,13 @@ void Help()
 
 	
 	std::cout << "Przykladowe wywolanie -i SwietoHoli.bmp -o Wyjscie -t \n";
+}
+bool checkIfExist (const std::string & inputName) {
+	if (FILE *file = fopen(inputName.c_str(), "r")) {
+		fclose(file);
+		return true;
+	}
+	else {
+		return false;
+	}
 }

@@ -32,7 +32,5 @@ public:
 	void SetWidth(int width);
 	void SetHeight(int height);
 	char * makeBitmap(const char* inputName);
-	//** makeBitmap(const char* inputName);
 	void saveBitmap(std::string inputName);
-	int Time();
 };

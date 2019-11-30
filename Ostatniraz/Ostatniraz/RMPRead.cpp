@@ -70,10 +70,7 @@ char* Image::makeBitmap(const char* inputName)
 		tempVar = new char[countOfPix * 3];
 		iStream.read(tempVar, countOfPix * 3);
 		Data = tempVar;
-		//char** mapOfPixel = new char*[countOfPix];
-		//for (int i = 0; i < countOfPix; i++) {
-		//	mapOfPixel[i] = new char[3];
-		//}
+		
 
 
 		iStream.seekg(FileInfo->bfOffBits);
@@ -81,79 +78,12 @@ char* Image::makeBitmap(const char* inputName)
 		iStream.close();
 
 		int dataIterator = 0;
-		/*for (int i = 0; i < countOfPix; i++) {
-			for (int j = 0; j < 3; j++) {
-				mapOfPixel[i][j] = fileData[dataIterator];
-				dataIterator++;
-			}
-		}
-		*/
 		width = PictureInfo->biWidth;
 		height = PictureInfo->biHeight;
 		return Data;
-		//return mapOfPixel;
 	}
 }
 
-/*char** Image::makeBitmap(const char* inputName)
-{
-	std::ifstream iStream(inputName, std::ios::binary);
-	if (iStream.good()) {
-		char* tempVar = new char[sizeof(BITMAPFILEHEADER)];
-		iStream.read(tempVar, sizeof(BITMAPFILEHEADER));
-		*FileInfo = *(BITMAPFILEHEADER*)(tempVar);
-
-		tempVar = new char[sizeof(BITMAPINFOHEADER)];
-		iStream.read(tempVar, sizeof(BITMAPINFOHEADER));
-		*PictureInfo = *(BITMAPINFOHEADER*)(tempVar);
-
-		iStream.seekg(FileInfo->bfOffBits, std::ios::beg);
-
-
-		int charCount = 3 * PictureInfo->biHeight * PictureInfo->biWidth;
-		char* fileData = new char[charCount];
-
-		int countOfPix = PictureInfo->biHeight * PictureInfo->biWidth;
-		tempVar = new char[countOfPix * 3];
-		iStream.read(tempVar, countOfPix * 3);
-		Data = tempVar;
-		//char** mapOfPixel = new char*[countOfPix];
-		//for (int i = 0; i < countOfPix; i++) {
-		//	mapOfPixel[i] = new char[3];
-		//}
-
-
-		iStream.seekg(FileInfo->bfOffBits);
-		iStream.read(fileData, charCount * sizeof(char));
-		iStream.close();
-
-		int dataIterator = 0;
-		/*for (int i = 0; i < countOfPix; i++) {
-			for (int j = 0; j < 3; j++) {
-				mapOfPixel[i][j] = fileData[dataIterator];
-				dataIterator++;
-			}
-		}
-		*/
-		/*width = PictureInfo->biWidth;
-		height = PictureInfo->biHeight;
-
-		//return mapOfPixel;
-	}
-	else {
-		return false;
-		return NULL;
-	}
-}*/
-
-int Time()
-{
-	auto start = std::chrono::high_resolution_clock::now();
-	auto stop = std::chrono::high_resolution_clock::now();
-	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-	int totalTime = duration.count();
-	return totalTime;
-}
 void Image::saveBitmap(std::string outputName)
 {
 	int charCount = 3 * PictureInfo->biHeight * PictureInfo->biWidth;

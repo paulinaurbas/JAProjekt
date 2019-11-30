@@ -16,3 +16,4 @@ void Help();
 */
 int TerminalCheck(int argc, char * argv[]);
 bool CheckIfNumber(int number);
+bool checkIfExist(const std::string & inputName);

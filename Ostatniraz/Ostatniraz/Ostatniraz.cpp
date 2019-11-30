@@ -19,10 +19,6 @@ extern "C" void _stdcall Negative(char* bmp, int begin, int end);
 #include "BMPRead.h"
 #include "ParamterReader.h"
 
-void PrintName()
-{
-	std::cout << "Test" << std::endl;
-}
 
 int main(int argc, char * argv[])
 {
@@ -30,6 +26,7 @@ int main(int argc, char * argv[])
 	if (terminalnumber == 1)
 	{
 		std::cout << "Nie poprawnie podana sciezka" << std::endl;
+		Help();
 		return 0;
 	}
 
@@ -37,6 +34,7 @@ int main(int argc, char * argv[])
 	if (check == false)
 	{
 		std::cout << "Nie ma takiego obrazka!" << std::endl;
+		Help();
 		return 0;
 	}
 

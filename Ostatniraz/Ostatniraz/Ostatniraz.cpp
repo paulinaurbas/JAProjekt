@@ -141,13 +141,27 @@ int main(int argc, char * argv[])
 			auto start = std::chrono::high_resolution_clock::now();
 			if (strcmp(argv[5], "-1") == 0) //for C
 			{
+				for (int i = 0; i < threadAmount; i++)
+				{
+					threads.push_back(new std::thread([=] {
+						int currentheight = 0;
+						for (int j = 0; j < i; j++)
+						{
+							currentheight += tabwithheight[j];
+						}
 
+						int offset = ((width * 3 * 4) % 3 + width * 3)*currentheight;
+
+						Negative(p1.Data + offset, width, tabwithheight[i]);
+					}));
+				}
+				/*
 				for (int i = 0; i < threadAmount; i++)
 				{
 					threads.push_back(new std::thread([=] {
 						Negative(p1.Data, i * sizeof(char)*tabwithheight[i] * width, tabwithheight[i] * width);
 					}));
-				}
+				}*/
 
 			}
 			else //for assembler 

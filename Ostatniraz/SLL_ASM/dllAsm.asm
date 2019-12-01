@@ -48,6 +48,7 @@ sub rcx, 4
 negativeSmallLoop:
 cmp rax, 0 ;check is there any bites to transform 
 jng endSmallLoop
+cmp rsi, rdx
 mov rdx, [rsi +rax]  ;all times to the end
 xor rdx, rbx ;RDX xor 0fffffffffh
 mov [rsi +rax], rdx ;save tranformt bites to array

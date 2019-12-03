@@ -41,22 +41,34 @@ NegativeMainLoop:
 	add rsi, rbx ;add 16 to pointer counter array
 	jmp NegativeMainLoop 
 endNegativeLoop:
-	emms
-	add rax, rbx ;RAX pointing last bajt in array
-	sub rax, rsi ;rax <- amount of bites to transform
-	mov rbx, 0FFFFFFFFh 
-	sub rcx, 1
+	;sub rsi, 0
+	add rax, 16
+	sub rax, rsi 
+	mov rcx, rax
+	;add rax, rbx ;RAX pointing last bajt in array
+	;sub rax, rsi ;rax <- amount of bites to transform
+	;mov rbx, 0FFFFFFFFh 
+	;sub rcx, 1
 negativeSmallLoop:
+	cmp rcx, 0
+	je endSmallLoop
+
+	mov al, [rsi]
+	xor al, 255
+	mov [rsi], al
+	inc rsi
+	dec rcx
+	jmp negativeSmallLoop
 ;negatyw bitowo dla ka¿dego bitu osobno, rsi przetwarzam, odejmuje od rax, dodaje do rsi 1 
-	cmp rax, 0 ;check is there any bites to transform 
+	;cmp rax, 0 ;check is there any bites to transform 
 	;jng endSmallLoop
-	cmp rsi, rdx
+;	cmp rsi, rdx
 	;mov rax, [rsi]  ;all times to the end
 	;xor eax, 255 ;RDX xor 0fffffffffh
 	;mov [], rax ;save tranformt bites to array
 	;sub eax, 1 ;next 4 bites
 	;jmp negativeSmallLoop
-;endSmallLoop:
+endSmallLoop:
 POP RAX ;returning register 
 POP RBX ;returing register
 POP RSI ;returing register

@@ -53,8 +53,8 @@ void Help()
 	std::cout << "-2 - assembler \n";
 	std::cout << "Nastepnie -t - oznacza liczbe watkow do prztwarzania, a po przelaczniku liczbe watkow z zakresu 1-64 \n";
 	std::cout << "Przykladowe poprawne wywolania programu \n";
-	std::cout << "Przykladowe wywolanie -i SwietoHoli.bmp -o Wyjscie \n";
-	std::cout << "Przykladowe wywolanie -i SwietoHoli.bmp -o Wyjscie -t 64 \n";
+	std::cout << "Przykladowe wywolanie -i SwietoHoli.bmp -o Wyjscie -1 \n";
+	std::cout << "Przykladowe wywolanie -i SwietoHoli.bmp -o Wyjscie -1 -t 64 \n";
 }
 bool checkIfExist (const std::string & inputName) {
 	if (FILE *file = fopen(inputName.c_str(), "r")) {

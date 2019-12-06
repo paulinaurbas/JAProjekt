@@ -29,13 +29,13 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Ostatniraz.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RMPRead.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ParameterReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

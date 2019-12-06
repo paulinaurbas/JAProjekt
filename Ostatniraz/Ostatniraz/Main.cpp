@@ -105,6 +105,7 @@ int main(int argc, char * argv[])
 			int totalTime = duration.count();
 			std::cout << "Time is: " << totalTime << std::endl;
 			p1.saveBitmap(argv[4]);
+			return 0;
 
 
 		}
@@ -200,6 +201,7 @@ int main(int argc, char * argv[])
 				int totalTime = duration.count();
 				std::cout << "Time is: " << totalTime << std::endl;
 				p1.saveBitmap(argv[4]);
+				return 0;
 			}
 
 		}
@@ -207,6 +209,7 @@ int main(int argc, char * argv[])
 	}
 	catch (...)
 	{
+		Help();
 		std::cout << "Error" << std::endl;
 	}
 
